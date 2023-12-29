@@ -1,5 +1,6 @@
-# Introdução 
-    Utilização do dataset [healthcare](https://www.kaggle.com/datasets/prasad22/healthcare-dataset) para praticas de machine learning utilizando o modelo de classificação SVM. 
+# **Introdução**
+    Utilização do dataset [healthcare](https://www.kaggle.com/datasets/prasad22/healthcare-dataset) 
+    para praticas de machine learning utilizando o modelo de classificação SVM. 
 
 # Depêndencias
 
