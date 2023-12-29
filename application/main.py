@@ -7,12 +7,8 @@ from pathlib import Path
 caminho = Path(Path.home(), "Documentos/healthcare_ML/")
 dataset = pd.read_csv(f"{caminho}/dataset_healthcare/healthcare_dataset.csv").drop(["Room Number", "Discharge Date", "Admission Type", "Date of Admission", "Name", "Hospital", "Doctor"], axis=1)
 dataset['Gender'] = (dataset["Gender"] == "Female").astype(int)
-train, valid, test = np.split(dataset.sample(frac=1), [int(0.6*len(dataset)), int(0.8*len(dataset))])
-X_train = dataset[dataset.columns[0:-2]].values
-y_train = dataset[dataset.columns[-1]].values
-y_test = dataset[dataset.columns[-1]].values
-tipos_sanguineos = list(dataset["Blood Type"].unique())
-label_sangue = {"O-": 0, "O+": 1, "B-": 2, "AB+": 3, "A+":4, "AB-": 5, "A-": 6, "B+": 7}
+
+label_sangue = {"O-": 0.00, "O+": 1.00, "B-": 2.00, "AB+": 3.00, "A+":4.00, "AB-": 5.00, "A-": 6.00, "B+": 7.00}
 label_medical = {'Diabetes': 0,  'Asthma': 1,  'Obesity': 2, 'Arthritis': 3, 'Hypertension':4, 'Cancer': 5}
 label_insurance = {'Medicare': 0, 'UnitedHealthcare': 1, 'Aetna': 2, 'Cigna': 3, 'Blue Cross': 4}
 label_medication = {'Aspirin': 0, 'Lipitor': 1, 'Penicillin': 2, 'Paracetamol': 3, 'Ibuprofen': 4}
@@ -24,7 +20,18 @@ dataset["Insurance Provider"] = dataset["Insurance Provider"].replace(label_insu
 dataset["Medical Condition"] = dataset["Medical Condition"].replace(label_medical)
 dataset["Blood Type"] = dataset["Blood Type"].replace(label_sangue)
 
-print(dataset.info())
+train, valid, test = np.split(dataset.sample(frac=1), [int(0.6*len(dataset)), int(0.8*len(dataset))])
+
+X_train = train[train.columns[0:-2]].values
+y_train = train[train.columns[-1]].values
+X_test = test[test.columns[0:-2]].values
+y_test = test[test.columns[-1]].values
+
+svm_model = SVC()
+svm_model.fit(X_train, y_train)
+y_pred = svm_model.predict(X_test)
+
+print(classification_report(y_test, y_pred))
 
 
 
