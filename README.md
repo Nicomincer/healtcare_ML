@@ -13,6 +13,8 @@
     
     Depois de ter instalado todas as depêndencias, abra um terminal e digite, na pasta em que está o arquivo main.py, o comando:
 
+    [healthcare](https://www.kaggle.com/datasets/prasad22/healthcare-dataset) 
+
     Em caso de estar no linux:
     `python3 main.py`
 
