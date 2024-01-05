@@ -2,9 +2,11 @@ from sklearn.svm import SVC
 from sklearn.metrics import classification_report
 import pandas as pd 
 import numpy as np 
+from sklearn.preprocessing import StandardScaler
+from imblearn.over_sampling import RandomOverSampler
 from pathlib import Path 
 
-caminho = Path(Path.home(), "Documentos/healthcare_ML/")
+caminho = Path(Path.home(), "Desktop/healthcare_ML/")
 dataset = pd.read_csv(f"{caminho}/dataset_healthcare/healthcare_dataset.csv").drop(["Room Number", "Discharge Date", "Admission Type", "Date of Admission", "Name", "Hospital", "Doctor"], axis=1)
 dataset['Gender'] = (dataset["Gender"] == "Female").astype(int)
 
@@ -20,12 +22,21 @@ dataset["Insurance Provider"] = dataset["Insurance Provider"].replace(label_insu
 dataset["Medical Condition"] = dataset["Medical Condition"].replace(label_medical)
 dataset["Blood Type"] = dataset["Blood Type"].replace(label_sangue)
 
-train, valid, test = np.split(dataset.sample(frac=1), [int(0.6*len(dataset)), int(0.8*len(dataset))])
+def padronizacao(data, over=False):
+    X = dataset[dataset.columns[:-1]].values
+    y = dataset[dataset.columns[-1]].values
+    escala = StandardScaler()
+    X = escala.fit_transform(X)
 
-X_train = train[train.columns[0:-2]].values
-y_train = train[train.columns[-1]].values
-X_test = test[test.columns[0:-2]].values
-y_test = test[test.columns[-1]].values
+    if over:
+        ros = RandomOverSampler()
+        X, y = ros.fit_resample(X, y)
+    
+    data = np.hstack((X, np.reshape(y, (-1, 1))))
+
+    return data, X, y 
+train, X_train, y_train = padronizacao(dataset, over=True)
+test, X_test, y_test = padronizacao(dataset, over=False)
 
 svm_model = SVC()
 svm_model.fit(X_train, y_train)
