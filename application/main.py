@@ -23,8 +23,8 @@ dataset["Medical Condition"] = dataset["Medical Condition"].replace(label_medica
 dataset["Blood Type"] = dataset["Blood Type"].replace(label_sangue)
 
 def padronizacao(data, over=False):
-    X = dataset[dataset.columns[:-1]].values
-    y = dataset[dataset.columns[-1]].values
+    X = data[data.columns[:-1]].values
+    y = data[data.columns[-1]].values
     escala = StandardScaler()
     X = escala.fit_transform(X)
 
