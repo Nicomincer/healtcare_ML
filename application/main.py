@@ -46,7 +46,7 @@ def padronizacao(data, over=False):
 train, X_train, y_train = padronizacao(dataset, over=True)
 test, X_test, y_test = padronizacao(dataset, over=False)
 
-svm_model = SVC()
+svm_model = SVC(C=100)
 svm_model.fit(X_train, y_train)
 y_pred = svm_model.predict(X_test)
 
